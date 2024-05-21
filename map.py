@@ -35,9 +35,9 @@ for legacy_title in legacy_sheet.columns:
 cloud_data_preview = cloud_data.head()
 
 # Change output path of file!!!
-output_path = '/Users/krishnasuresh/Desktop/VDart/West Orange - Krishna/updated_po_cloud_sheet.xlsx'
+output_path = '/Users/krishnasuresh/Desktop/VDart/West Orange - Krishna/updated_po_cloud_sheet.csv'
 
-cloud_data.to_excel(output_path, index=False)
+cloud_data.to_csv(output_path, index=False)
 
 print(f"Data transfer complete. Check '{output_path}'")
 print("Transfer Log:")
