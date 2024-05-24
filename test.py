@@ -12,17 +12,15 @@ def load_and_prepare_sheets():
     conversion_sheet = pd.read_excel(conversion_sheet_path)
     cloud_sheet = pd.read_excel(cloud_sheet_path)
     
-    # Strip whitespace from columns in conversion_sheet
     conversion_sheet['Cloud'] = conversion_sheet['Cloud'].str.strip()
     conversion_sheet['Legacy'] = conversion_sheet['Legacy'].str.strip()
     cloud_sheet.columns = cloud_sheet.columns.str.strip()
 
-    # Convert relevant columns in conversion_sheet to string type
     conversion_sheet['Cloud'] = conversion_sheet['Cloud'].astype(str)
     conversion_sheet['Legacy'] = conversion_sheet['Legacy'].astype(str)
     conversion_sheet = conversion_sheet.astype(str)
 
-    # Prepare the data to be passed to the API
+    # API
     conversion_data = conversion_sheet.apply(lambda row: f"{row['Cloud']}: {row['Legacy']}", axis=1).tolist()
     conversion_string = ", ".join(conversion_data)
     
@@ -65,7 +63,7 @@ def call_ollama_api(conversion_string, cloud_list, legacy_list):
     return None
 
 def save_updated_mapping(final_output):
-    # Parse the final output to create a new conversion sheet DataFrame
+
     updated_mappings = [line.split(":") for line in final_output.strip().split("\n")]
     updated_conversion_sheet = pd.DataFrame(updated_mappings, columns=['Cloud', 'Legacy'])
     updated_conversion_sheet['Cloud'] = updated_conversion_sheet['Cloud'].str.strip()
@@ -124,10 +122,9 @@ def test_ollama():
     if final_output:
         updated_conversion_sheet, updated_conversion_sheet_path = save_updated_mapping(final_output)
         
-        # Use the same paths for legacy and cloud sheets
         output_path = '/Users/krishnasuresh/Desktop/VDart/West Orange - Krishna/updated_po_cloud_sheet.csv'
         
         transfer_data(updated_conversion_sheet, legacy_sheet_path, cloud_sheet_path, output_path)
 
-# Run the test function
+# run
 test_ollama()
